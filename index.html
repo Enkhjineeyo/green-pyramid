@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Green Pyramid — Хогоо ухаалгаар ангил</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1a7a3c;--green2:#2ea855;--green-light:#e8f5ed;--green-pale:#f2fbf5;
+  --yellow:#f5c518;--ink:#0f1f14;--mid:#3d5c47;--soft:#7a9e84;
+  --line:#d4e8da;--bg:#f7fbf8;--white:#ffffff;--radius:16px;
+  --shadow:0 4px 24px rgba(26,122,60,.10);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Epilogue',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,251,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:0 20px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;cursor:pointer}
+.nav-logo .logo-box{background:var(--green);color:#fff;width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:1rem}
+.nav-links{display:flex;gap:2px}
+.nav-links a{font-size:.85rem;font-weight:500;color:var(--mid);padding:8px 13px;border-radius:10px;text-decoration:none;transition:.18s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{background:var(--green-light);color:var(--green)}
+.points-badge{background:var(--green);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:.82rem;padding:7px 15px;border-radius:50px;display:flex;align-items:center;gap:5px;cursor:pointer;transition:.18s}
+.points-badge:hover{background:#155f2e}
+
+.page{display:none;padding-top:80px;min-height:100vh;animation:fadeIn .28s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+.hero{padding:56px 24px 64px;max-width:860px;margin:0 auto;text-align:center}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--green-light);color:var(--green);font-size:.78rem;font-weight:600;padding:6px 16px;border-radius:50px;margin-bottom:24px;letter-spacing:.06em;text-transform:uppercase}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:800;line-height:1.1;color:var(--ink);margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{font-size:1.05rem;color:var(--mid);max-width:520px;margin:0 auto 32px;line-height:1.72}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;padding:13px 26px;border-radius:12px;border:none;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:7px}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 4px 16px rgba(26,122,60,.22)}
+.btn-primary:hover{background:#155f2e;transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--green);border:2px solid var(--green)}
+.btn-outline:hover{background:var(--green-light)}
+
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px;max-width:860px;margin:0 auto;padding:0 24px 72px}
+.feat-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;text-align:center;transition:.2s;cursor:pointer}
+.feat-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.feat-icon{font-size:1.9rem;margin-bottom:10px}
+.feat-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;color:var(--ink);margin-bottom:5px}
+.feat-card p{font-size:.83rem;color:var(--soft);line-height:1.5}
+
+/* SCAN */
+.scan-wrap{max-width:680px;margin:0 auto;padding:36px 20px}
+.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.75rem;color:var(--ink);margin-bottom:5px}
+.page-sub{color:var(--soft);font-size:.92rem;margin-bottom:28px}
+
+.scan-box{background:var(--white);border:2px dashed var(--line);border-radius:20px;padding:44px 20px;text-align:center;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.scan-box:hover{border-color:var(--green);background:var(--green-pale)}
+.scan-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.scan-icon{font-size:2.8rem;margin-bottom:14px}
+.scan-box h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--ink);margin-bottom:7px}
+.scan-box p{font-size:.87rem;color:var(--soft)}
+.result-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-top:20px;display:none}
+.result-card.show{display:block;animation:fadeIn .3s ease}
+.result-label{font-size:.73rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:3px}
+.result-type{font-family:'Syne',sans-serif;font-weight:800;font-size:1.45rem;margin-bottom:10px}
+.result-bin{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:50px;font-weight:600;font-size:.88rem;margin-bottom:14px}
+.bin-green{background:#e8f5ed;color:#1a7a3c}.bin-yellow{background:#fdf8e1;color:#b8860b}
+.bin-blue{background:#e3f2fd;color:#1565c0}.bin-black{background:#f0f0f0;color:#333}
+.result-tips{font-size:.88rem;color:var(--mid);line-height:1.62;border-top:1px solid var(--line);padding-top:14px;margin-top:14px}
+.scan-loading{display:none;text-align:center;padding:28px}
+.scan-loading.show{display:block}
+.spinner{width:38px;height:38px;border:3px solid var(--line);border-top-color:var(--green);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.examples-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:8px}
+.ex-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:13px;text-align:center;cursor:pointer;transition:.18s}
+.ex-card:hover{border-color:var(--green);background:var(--green-pale)}
+
+/* PICKUP */
+.pickup-wrap{max-width:720px;margin:0 auto;padding:36px 20px}
+.form-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:18px}
+.form-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:18px}
+.form-grid{display:grid;gap:14px}
+.form-grid.cols-2{grid-template-columns:1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:.78rem;font-weight:600;color:var(--mid);letter-spacing:.04em;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:.92rem;color:var(--ink);background:var(--bg);transition:.18s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green);background:var(--white)}
+.waste-types{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px}
+.waste-type-btn{border:2px solid var(--line);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:.18s;background:var(--bg);font-family:'Epilogue',sans-serif}
+.waste-type-btn:hover,.waste-type-btn.selected{border-color:var(--green);background:var(--green-light)}
+.waste-type-btn .wt-icon{font-size:1.5rem;margin-bottom:5px}
+.waste-type-btn .wt-name{font-size:.8rem;font-weight:600;color:var(--mid)}
+.waste-type-btn.selected .wt-name{color:var(--green)}
+.centers-list{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.center-card{border:2px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.18s;background:var(--white)}
+.center-card:hover,.center-card.selected{border-color:var(--green);background:var(--green-light)}
+.center-icon{width:42px;height:42px;background:var(--green-light);border-radius:10px;display:grid;place-items:center;font-size:1.25rem;flex-shrink:0}
+.center-info{flex:1}
+.center-info h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;color:var(--ink)}
+.center-info p{font-size:.8rem;color:var(--soft);margin-top:2px}
+.center-pts{font-family:'Syne',sans-serif;font-weight:800;color:var(--green);font-size:.98rem}
+.success-msg{background:var(--green);color:#fff;border-radius:var(--radius);padding:22px;text-align:center;display:none;margin-top:16px}
+.success-msg.show{display:block;animation:fadeIn .3s ease}
+.success-msg h3{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;margin-bottom:7px}
+
+/* STORE */
+.store-wrap{max-width:880px;margin:0 auto;padding:36px 20px}
+.store-tabs{display:flex;gap:7px;margin-bottom:24px;flex-wrap:wrap}
+.tab-btn{font-family:'Syne',sans-serif;font-weight:600;font-size:.84rem;padding:9px 18px;border-radius:50px;border:2px solid var(--line);background:transparent;color:var(--mid);cursor:pointer;transition:.18s}
+.tab-btn:hover,.tab-btn.active{border-color:var(--green);background:var(--green);color:#fff}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.shop-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.2s;cursor:pointer}
+.shop-card:hover{box-shadow:var(--shadow);transform:translateY(-3px)}
+.shop-thumb{height:148px;background:linear-gradient(135deg,var(--green-light),var(--green-pale));display:grid;place-items:center;font-size:2.8rem;position:relative}
+.shop-badge{position:absolute;top:11px;left:11px;background:var(--green);color:#fff;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:50px;font-family:'Syne',sans-serif}
+.shop-info{padding:15px}
+.shop-info h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;color:var(--ink);margin-bottom:3px}
+.shop-info p{font-size:.8rem;color:var(--soft);margin-bottom:10px}
+.shop-meta{display:flex;align-items:center;justify-content:space-between}
+.shop-price{font-family:'Syne',sans-serif;font-weight:800;color:var(--green);font-size:.95rem}
+.tag-row{display:flex;gap:5px;margin-bottom:9px;flex-wrap:wrap}
+.tag{font-size:.7rem;background:var(--green-light);color:var(--green);padding:3px 9px;border-radius:50px;font-weight:600}
+.donate-banner{background:linear-gradient(135deg,var(--green),#2ea855);color:#fff;border-radius:20px;padding:28px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.donate-banner .db-text{flex:1}
+.donate-banner h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;margin-bottom:6px}
+.donate-banner p{font-size:.88rem;opacity:.85;line-height:1.58}
+.btn-white{background:#fff;color:var(--green);font-family:'Syne',sans-serif;font-weight:700;padding:11px 22px;border-radius:10px;border:none;cursor:pointer;font-size:.88rem;transition:.2s;flex-shrink:0}
+.btn-white:hover{background:var(--green-light)}
+
+/* POINTS */
+.points-wrap{max-width:680px;margin:0 auto;padding:36px 20px}
+.points-hero{background:linear-gradient(135deg,var(--green),#2d9e50);border-radius:22px;padding:34px;color:#fff;margin-bottom:24px;text-align:center;position:relative;overflow:hidden}
+.points-hero::before{content:'⬡';position:absolute;font-size:190px;opacity:.05;right:-20px;top:-36px;line-height:1}
+.points-hero h2{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;opacity:.78;letter-spacing:.07em;text-transform:uppercase}
+.points-big{font-family:'Syne',sans-serif;font-weight:800;font-size:3.8rem;line-height:1;margin-bottom:3px}
+.points-sub{font-size:.87rem;opacity:.72}
+.nfc-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:18px}
+.nfc-card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;margin-bottom:4px}
+.nfc-card p{font-size:.86rem;color:var(--soft);margin-bottom:16px}
+.nfc-row{display:flex;gap:9px}
+.nfc-row input{flex:1;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:.92rem;outline:none;transition:.18s}
+.nfc-row input:focus{border-color:var(--green)}
+.btn-green{background:var(--green);color:#fff;font-family:'Syne',sans-serif;font-weight:700;padding:11px 18px;border-radius:10px;border:none;cursor:pointer;font-size:.88rem;transition:.2s;flex-shrink:0}
+.btn-green:hover{background:#155f2e}
+.earn-table{display:flex;flex-direction:column;gap:8px}
+.earn-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--green-pale);border-radius:10px}
+.earn-row span:first-child{font-size:.88rem;color:var(--mid)}
+.earn-pts{font-family:'Syne',sans-serif;font-weight:800;color:var(--green);font-size:.95rem}
+.history-list{display:flex;flex-direction:column;gap:9px}
+.history-item{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.h-icon{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;font-size:1.05rem;flex-shrink:0}
+.h-icon.earn{background:#e8f5ed}.h-icon.spend{background:#fdf8e1}
+.h-info{flex:1}
+.h-info h4{font-size:.88rem;font-weight:600;color:var(--ink)}
+.h-info p{font-size:.76rem;color:var(--soft)}
+.h-pts{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem}
+.h-pts.plus{color:var(--green)}.h-pts.minus{color:#d97706}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;display:none;place-items:center;padding:20px}
+.modal-overlay.show{display:grid}
+.modal{background:var(--white);border-radius:20px;padding:28px;max-width:440px;width:100%;animation:fadeIn .2s ease}
+.modal h3{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;margin-bottom:7px}
+.modal p{color:var(--soft);font-size:.88rem;margin-bottom:18px}
+.modal-form{display:grid;gap:12px;margin-bottom:18px}
+.modal-btns{display:flex;gap:9px;justify-content:flex-end}
+.btn-sm{font-family:'Syne',sans-serif;font-weight:700;font-size:.83rem;padding:9px 18px;border-radius:9px;border:none;cursor:pointer}
+.btn-sm.cancel{background:var(--line);color:var(--mid)}.btn-sm.confirm{background:var(--green);color:#fff}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:#fff;padding:13px 18px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:600;font-size:.88rem;transform:translateY(70px);opacity:0;transition:.28s;z-index:300;max-width:300px;display:flex;align-items:center;gap:7px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* BOTTOM NAV */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--line);padding:8px 0;z-index:100;justify-content:space-around}
+@media(max-width:600px){
+  .bottom-nav{display:flex}
+  .nav-links{display:none}
+  .page{padding-bottom:70px}
+  .form-grid.cols-2{grid-template-columns:1fr}
+  .points-big{font-size:3rem}
+}
+.bnav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 14px;border:none;background:none;cursor:pointer;color:var(--soft);font-family:'Epilogue',sans-serif;font-size:.66rem;font-weight:500;border-radius:10px;transition:.18s}
+.bnav-btn.active{color:var(--green)}
+.bnav-btn .bi{font-size:1.25rem}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="logo-box">♻</div>Green Pyramid
+  </div>
+  <div class="nav-links">
+    <a class="active" onclick="showPage('home',this)">Нүүр</a>
+    <a onclick="showPage('scan',this)">🔍 Scan</a>
+    <a onclick="showPage('pickup',this)">🚛 Хүргэлт</a>
+    <a onclick="showPage('store',this)">🛍 Дэлгүүр</a>
+    <a onclick="showPage('points',this)">⬡ Points</a>
+  </div>
+  <div class="points-badge" onclick="showPage('points')">⬡ <span id="nav-points">240</span> pts</div>
+</nav>
+
+<div class="bottom-nav">
+  <button class="bnav-btn active" onclick="showPage('home',this)"><span class="bi">🏠</span>Нүүр</button>
+  <button class="bnav-btn" onclick="showPage('scan',this)"><span class="bi">🔍</span>Scan</button>
+  <button class="bnav-btn" onclick="showPage('pickup',this)"><span class="bi">🚛</span>Хүргэлт</button>
+  <button class="bnav-btn" onclick="showPage('store',this)"><span class="bi">🛍</span>Дэлгүүр</button>
+  <button class="bnav-btn" onclick="showPage('points',this)"><span class="bi">⬡</span>Points</button>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-tag">♻ Reuse · Reduce · Recycle</div>
+    <h1>Хогоо ухаалгаар ангил,<br><em>байгалиа хамгаал</em></h1>
+    <p>Зураг авч scan хийгээд ямар хогийн саванд хийхийг мэд. Хог цуглуулж point цуглуул — автобусны картаа цэнэглэ.</p>
+    <div class="hero-btns">
+      <button class="btn btn-primary" onclick="showPage('scan')">🔍 Хог Scan хийх</button>
+      <button class="btn btn-outline" onclick="showPage('pickup')">🚛 Хүргэлт дуудах</button>
+    </div>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card" onclick="showPage('scan')">
+      <div class="feat-icon">📷</div>
+      <h3>Хог Scan</h3>
+      <p>AI-аар зураг дүн шинжилгээ хийж ямар хогийн саванд хийхийг хэлнэ</p>
+    </div>
+    <div class="feat-card" onclick="showPage('pickup')">
+      <div class="feat-icon">🚛</div>
+      <h3>Хүргэлт</h3>
+      <p>Цуглуулсан дахивар хогоо дахин боловсруулах цэгт хүргүүл, point цуглуул</p>
+    </div>
+    <div class="feat-card" onclick="showPage('store')">
+      <div class="feat-icon">🛍</div>
+      <h3>Thrift Дэлгүүр</h3>
+      <p>Монголын thrift shop-уудыг нэг дороос хайж, хувцас зар, солилц</p>
+    </div>
+    <div class="feat-card" onclick="showPage('points')">
+      <div class="feat-icon">⬡</div>
+      <h3>Points → Автобус</h3>
+      <p>Хог хүргэхэд point цуглуулж NFC картаа цэнэглэ (1 pt = 10₮)</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCAN -->
+<div id="page-scan" class="page">
+  <div class="scan-wrap">
+    <div class="page-title">🔍 Хог Scan хийх</div>
+    <div class="page-sub">Хогийн зургийг оруулна уу — AI таньж ямар саванд хийхийг хэлнэ</div>
+    <div class="scan-box">
+      <input type="file" id="fileInput" accept="image/*" onchange="handleScan(this)">
+      <div class="scan-icon">📷</div>
+      <h3>Зураг оруулах эсвэл дарж сонгох</h3>
+      <p>JPG · PNG · WEBP — Утасны камераас шууд авч болно</p>
+    </div>
+    <div class="scan-loading" id="scanLoading">
+      <div class="spinner"></div>
+      <p style="color:var(--soft);font-size:.9rem">AI шинжилж байна...</p>
+    </div>
+    <div class="result-card" id="resultCard">
+      <div class="result-label">Таньсан хог</div>
+      <div class="result-type" id="resultType">—</div>
+      <div id="resultBin" class="result-bin bin-green">📦 Ногоон хогийн сав</div>
+      <div class="result-tips" id="resultTips"></div>
+      <button class="btn btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('pickup')">
+        🚛 Хүргэлтэнд нэмэх
+      </button>
+    </div>
+    <div style="margin-top:28px">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;font-size:.92rem;color:var(--mid)">Хурдан жишээгээр туршиж үзэх</div>
+      <div class="examples-grid" id="examplesGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PICKUP -->
+<div id="page-pickup" class="page">
+  <div class="pickup-wrap">
+    <div class="page-title">🚛 Хүргэлт захиалах</div>
+    <div class="page-sub">Цуглуулсан дахивраа боловсруулах цэгт хүргүүлж point цуглуул</div>
+    <div class="form-card">
+      <h3>♻ Хог төрөл сонгох</h3>
+      <div class="waste-types" id="wasteTypeSelect"></div>
+    </div>
+    <div class="form-card">
+      <h3>📦 Хэмжээ</h3>
+      <div class="form-grid cols-2">
+        <div class="form-group">
+          <label>Тоо ширхэг / кг</label>
+          <input type="number" id="wasteAmount" placeholder="жнь: 5" min="1">
+        </div>
+        <div class="form-group">
+          <label>Нэгж</label>
+          <select id="wasteUnit">
+            <option>ширхэг</option><option>кг</option><option>уут</option><option>хайрцаг</option>
+          </select>
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label>Нэмэлт тайлбар</label>
+          <textarea id="wasteNote" placeholder="жнь: 10 ширхэг лааз, 3 кг цаас..." rows="2" style="resize:none"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="form-card">
+      <h3>📍 Хаяг</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Дүүрэг</label>
+          <select id="district">
+            <option>Сүхбаатар дүүрэг</option><option>Баянзүрх дүүрэг</option>
+            <option>Хан-Уул дүүрэг</option><option>Чингэлтэй дүүрэг</option>
+            <option>Баянгол дүүрэг</option><option>Сонгинохайрхан дүүрэг</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Дэлгэрэнгүй хаяг</label>
+          <input type="text" id="address" placeholder="жнь: 5-р хороо, 12-р байр...">
+        </div>
+        <div class="form-group">
+          <label>Утасны дугаар</label>
+          <input type="tel" id="phone" placeholder="9900 0000">
+        </div>
+      </div>
+    </div>
+    <div class="form-card">
+      <h3>🏭 Хүлээн авах цэг</h3>
+      <div class="centers-list" id="centersList"></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:.98rem" onclick="submitPickup()">
+      ✅ Захиалга өгөх
+    </button>
+    <div class="success-msg" id="pickupSuccess">
+      <div style="font-size:2.4rem;margin-bottom:7px">🎉</div>
+      <h3>Захиалга амжилттай!</h3>
+      <p>Жолооч тантай удахгүй холбогдох болно. Хог хүлээн авахад <strong>+50 points</strong> нэмэгдэнэ.</p>
+    </div>
+  </div>
+</div>
+
+<!-- STORE -->
+<div id="page-store" class="page">
+  <div class="store-wrap">
+    <div class="page-title">🛍 Дэлгүүр & Thrift</div>
+    <div class="page-sub">Монголын thrift shop-ууд · Хандивлах · Зарах · Солилцох</div>
+    <div class="donate-banner">
+      <div style="font-size:2.8rem">👕</div>
+      <div class="db-text">
+        <h3>Хувцас хандивлах</h3>
+        <p>Хэрэглэхгүй болсон хувцасаа хандивлаарай. Хандив тус бүрт <strong>+30 points</strong> авна!</p>
+      </div>
+      <button class="btn-white" onclick="showDonate()">Хандивлах →</button>
+    </div>
+    <div class="store-tabs">
+      <button class="tab-btn active" onclick="filterStore('all',this)">Бүгд</button>
+      <button class="tab-btn" onclick="filterStore('thrift',this)">Thrift Shop</button>
+      <button class="tab-btn" onclick="filterStore('sell',this)">Зарах</button>
+      <button class="tab-btn" onclick="filterStore('swap',this)">Солилцох</button>
+    </div>
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+</div>
+
+<!-- POINTS -->
+<div id="page-points" class="page">
+  <div class="points-wrap">
+    <div class="page-title">⬡ Миний Points</div>
+    <div class="page-sub">Хог хүргэж point цуглуулаад автобусны картаа цэнэглэ</div>
+    <div class="points-hero">
+      <h2>Нийт Points</h2>
+      <div class="points-big" id="totalPoints">240</div>
+      <div class="points-sub">≈ 2,400₮ автобусны цэнэглэлт</div>
+    </div>
+    <div class="nfc-card">
+      <h3>🚌 NFC карт цэнэглэх</h3>
+      <p>Автобусны картынхаа дугаарыг оруулан points-оо мөнгө болгон цэнэглэ (1 pt = 10₮, мин. 100 pts)</p>
+      <div class="nfc-row">
+        <input type="text" id="nfcCard" placeholder="Картын дугаар: 0000-0000-0000">
+        <button class="btn-green" onclick="chargeNFC()">Цэнэглэх</button>
+      </div>
+    </div>
+    <div class="nfc-card">
+      <h3>📊 Points хэрхэн цуглуулах</h3>
+      <div class="earn-table" style="margin-top:10px">
+        <div class="earn-row"><span>🚛 Хог хүргэлт амжилттай</span><span class="earn-pts">+50 pts</span></div>
+        <div class="earn-row"><span>👕 Хувцас хандивлах</span><span class="earn-pts">+30 pts</span></div>
+        <div class="earn-row"><span>📷 Scan хийж бүртгэх</span><span class="earn-pts">+5 pts</span></div>
+        <div class="earn-row"><span>🔄 Солилцох гүйлгээ</span><span class="earn-pts">+15 pts</span></div>
+      </div>
+    </div>
+    <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:12px;font-size:.95rem">Сүүлийн үйл ажиллагаа</div>
+    <div class="history-list" id="historyList"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>👕 Хувцас хандивлах</h3>
+    <p>Хандивлах хувцасны мэдээллийг оруулна уу. Амжилттай хүлээн авахад +30 pts нэмэгдэнэ.</p>
+    <div class="modal-form">
+      <div class="form-group">
+        <label>Хувцасны төрөл</label>
+        <select id="donateType">
+          <option>Эрэгтэй хувцас</option><option>Эмэгтэй хувцас</option>
+          <option>Хүүхдийн хувцас</option><option>Гутал</option><option>Бусад</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Тоо ширхэг</label>
+        <input type="number" id="donateCount" placeholder="1" min="1">
+      </div>
+      <div class="form-group">
+        <label>Байдал</label>
+        <select id="donateCondition">
+          <option>Сайн байдалтай</option><option>Дунд зэрэг</option><option>Шинэ</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-sm cancel" onclick="closeModal()">Болих</button>
+      <button class="btn-sm confirm" onclick="confirmDonate()">✅ Хандивлах (+30 pts)</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ <span id="toastMsg"></span></div>
+
+<script>
+let userPoints = 240;
+let selectedWasteTypes = [];
+let selectedCenter = null;
+
+const wasteData = [
+  {id:'plastic',icon:'🧴',name:'Хуванцар',bin:'blue',binName:'Цэнхэр сав',tips:'Угааж цэвэрлэсний дараа хийнэ. Бүрхүүл, шошгийг авна.',pts:10},
+  {id:'paper',icon:'📄',name:'Цаас/Картон',bin:'blue',binName:'Цэнхэр сав',tips:'Норгохгүй байх хэрэгтэй. Нугалж жижиглэн хийж болно.',pts:8},
+  {id:'glass',icon:'🫙',name:'Шил',bin:'green',binName:'Ногоон сав',tips:'Хугарсан шилийг тусдаа сав ашиглана. Аюулгүй байдалд анхаар.',pts:12},
+  {id:'metal',icon:'🥫',name:'Металл/Лааз',bin:'yellow',binName:'Шар сав',tips:'Дотрыг угааж, хавтгайлж болно. Хурц ирмэгт болгоомжтой.',pts:15},
+  {id:'food',icon:'🍌',name:'Органик/Хоол',bin:'green',binName:'Ногоон (органик)',tips:'Бусад хогоос тусад нь байлгана. Компост хийвэл бүр сайн.',pts:5},
+  {id:'electronic',icon:'📱',name:'Электроник',bin:'black',binName:'Тусгай цэг',tips:'Ердийн саванд хийхгүй. Тусгай цуглуулах цэгт заавал хүргэнэ.',pts:20},
+  {id:'textile',icon:'👕',name:'Хувцас/Даавуу',bin:'yellow',binName:'Текстиль сав',tips:'Цэвэр, хуурай байлгана. Дэлгүүр хуудасд зарах боломжтой!',pts:10},
+  {id:'battery',icon:'🔋',name:'Зай/Батарей',bin:'black',binName:'Тусгай цэг',tips:'Хөрсийг хордуулдаг тул тусгай цэгт хүргэх шаардлагатай.',pts:25},
+];
+
+const centers = [
+  {id:1,icon:'🏭',name:'Эко Монгол ХХК',addr:'Баянзүрх, Индустриал гудамж 5',pts:50},
+  {id:2,icon:'♻',name:'Дахин Боловсруулах Төв',addr:'Хан-Уул, Зайсан орчим',pts:45},
+  {id:3,icon:'🌱',name:'Green Future NGO',addr:'Сүхбаатар, Нийслэлийн зам 12',pts:40},
+  {id:4,icon:'🏢',name:'Ногоон Хот Компани',addr:'Баянгол, Зам 21',pts:55},
+];
+
+const shops = [
+  {id:1,type:'thrift',icon:'👗',name:'Second Life Store',desc:'Монголын анхны thrift shop. Олон мянган зүйл байнга шинэчлэгддэг.',badge:'Онцлох',tags:['Нэрийн','Хандив +30pts'],price:'5,000₮-аас'},
+  {id:2,type:'thrift',icon:'👔',name:'ReWear UB',desc:'Залуусын хувцас, гутал, аксессуар.',badge:'Шинэ',tags:['Залуус'],price:'3,000₮-аас'},
+  {id:3,type:'thrift',icon:'🧥',name:'Vintage MN',desc:'Гадаадын хуучин нэрийн хувцас, Vintage загвар.',badge:'',tags:['Vintage','Импорт'],price:'15,000₮-аас'},
+  {id:4,type:'thrift',icon:'👟',name:'Sole Cycle',desc:'Хуучин гутал, sneaker-ийн дэлгүүр.',badge:'',tags:['Гутал'],price:'8,000₮-аас'},
+  {id:5,type:'sell',icon:'👖',name:'Хувцас зарах',desc:'Өөрийн хэрэглэхгүй болсон хувцасаа зар.',badge:'',tags:['Өөрийн'],price:'Чөлөөт үнэ'},
+  {id:6,type:'swap',icon:'🔄',name:'Солилцлого',desc:'Хоёр тал тохиролцон хувцасаа солилцоно. +15 pts!',badge:'Шинэ',tags:['Үнэгүй','+15pts'],price:'Үнэгүй'},
+];
+
+const historyData = [
+  {icon:'🚛',type:'earn',label:'Хүргэлт — Хуванцар 2кг',date:'2025.03.22',pts:'+50'},
+  {icon:'📷',type:'earn',label:'Scan хийсэн — Шил',date:'2025.03.21',pts:'+5'},
+  {icon:'👕',type:'earn',label:'Хувцас хандивласан',date:'2025.03.20',pts:'+30'},
+  {icon:'🚌',type:'spend',label:'NFC карт цэнэглэсэн',date:'2025.03.18',pts:'-100'},
+  {icon:'🚛',type:'earn',label:'Хүргэлт — Металл 1кг',date:'2025.03.15',pts:'+50'},
+];
+
+function init() {
+  renderWasteExamples();
+  renderWasteTypeButtons();
+  renderCenters();
+  renderShopGrid('all');
+  renderHistory();
+}
+
+function renderWasteExamples() {
+  document.getElementById('examplesGrid').innerHTML = wasteData.map(w=>`
+    <div class="ex-card" onclick="quickScan('${w.id}')">
+      <div style="font-size:1.7rem;margin-bottom:6px">${w.icon}</div>
+      <div style="font-size:.8rem;font-weight:600;color:var(--mid)">${w.name}</div>
+      <div style="font-size:.73rem;color:var(--soft);margin-top:2px">+${w.pts} pts</div>
+    </div>`).join('');
+}
+
+function renderWasteTypeButtons() {
+  document.getElementById('wasteTypeSelect').innerHTML = wasteData.map(w=>`
+    <div class="waste-type-btn" id="wt-${w.id}" onclick="toggleWaste('${w.id}',this)">
+      <div class="wt-icon">${w.icon}</div>
+      <div class="wt-name">${w.name}</div>
+    </div>`).join('');
+}
+
+function toggleWaste(id, el) {
+  el.classList.toggle('selected');
+  selectedWasteTypes = el.classList.contains('selected')
+    ? [...selectedWasteTypes, id]
+    : selectedWasteTypes.filter(x=>x!==id);
+}
+
+function renderCenters() {
+  document.getElementById('centersList').innerHTML = centers.map(c=>`
+    <div class="center-card" id="c-${c.id}" onclick="selectCenter(${c.id},this)">
+      <div class="center-icon">${c.icon}</div>
+      <div class="center-info">
+        <h4>${c.name}</h4>
+        <p>📍 ${c.addr}</p>
+      </div>
+      <div class="center-pts">+${c.pts} pts</div>
+    </div>`).join('');
+}
+
+function selectCenter(id, el) {
+  document.querySelectorAll('.center-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCenter = id;
+}
+
+function renderShopGrid(filter) {
+  const items = filter==='all'?shops:shops.filter(s=>s.type===filter);
+  document.getElementById('shopGrid').innerHTML = items.map(s=>`
+    <div class="shop-card">
+      <div class="shop-thumb">
+        <span>${s.icon}</span>
+        ${s.badge?`<div class="shop-badge">${s.badge}</div>`:''}
+      </div>
+      <div class="shop-info">
+        <h4>${s.name}</h4>
+        <p>${s.desc}</p>
+        <div class="tag-row">${s.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="shop-meta">
+          <span class="shop-price">${s.price}</span>
+          <button class="btn-green" style="font-size:.78rem;padding:7px 13px" onclick="showToast('${s.name}-д нэвтэрлээ!')">Нэвтрэх →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderHistory() {
+  document.getElementById('historyList').innerHTML = historyData.map(h=>`
+    <div class="history-item">
+      <div class="h-icon ${h.type}">${h.icon}</div>
+      <div class="h-info"><h4>${h.label}</h4><p>${h.date}</p></div>
+      <div class="h-pts ${h.type==='earn'?'plus':'minus'}">${h.pts}</div>
+    </div>`).join('');
+}
+
+function handleScan(input) {
+  if(!input.files[0]) return;
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('scanLoading').classList.add('show');
+  setTimeout(()=>{
+    document.getElementById('scanLoading').classList.remove('show');
+    const w = wasteData[Math.floor(Math.random()*wasteData.length)];
+    showResult(w); addPoints(5,'Scan хийж бүртгэсэн');
+  }, 1800);
+}
+
+function quickScan(id) {
+  document.getElementById('resultCard').classList.remove('show');
+  document.getElementById('scanLoading').classList.add('show');
+  setTimeout(()=>{
+    document.getElementById('scanLoading').classList.remove('show');
+    showResult(wasteData.find(x=>x.id===id));
+    addPoints(5,'Scan хийж бүртгэсэн');
+  }, 1200);
+}
+
+function showResult(w) {
+  document.getElementById('resultType').textContent = `${w.icon} ${w.name}`;
+  const binEl = document.getElementById('resultBin');
+  const map = {blue:'bin-blue',green:'bin-green',yellow:'bin-yellow',black:'bin-black'};
+  binEl.className = `result-bin ${map[w.bin]||'bin-green'}`;
+  binEl.textContent = `📦 ${w.binName}`;
+  document.getElementById('resultTips').innerHTML = `<strong>💡 Зөвлөгөө:</strong> ${w.tips}<br><br><strong>+${w.pts} pts</strong> хүргэлт захиалах үед нэмэгдэнэ!`;
+  document.getElementById('resultCard').classList.add('show');
+}
+
+function submitPickup() {
+  if(selectedWasteTypes.length===0){showToast('❗ Хог төрөл сонгоно уу');return;}
+  if(!selectedCenter){showToast('❗ Хүлээн авах цэг сонгоно уу');return;}
+  if(!document.getElementById('address').value.trim()){showToast('❗ Хаяг оруулна уу');return;}
+  const suc = document.getElementById('pickupSuccess');
+  suc.classList.add('show');
+  addPoints(50,'Хүргэлт захиалсан');
+  selectedWasteTypes=[];selectedCenter=null;
+  document.querySelectorAll('.waste-type-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.center-card').forEach(c=>c.classList.remove('selected'));
+  setTimeout(()=>suc.classList.remove('show'),4500);
+}
+
+function filterStore(type, el) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderShopGrid(type);
+}
+
+function showDonate() {
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function confirmDonate() {
+  closeModal(); addPoints(30,'Хувцас хандивласан');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function chargeNFC() {
+  const card = document.getElementById('nfcCard').value.trim();
+  if(!card){showToast('❗ Картын дугаар оруулна уу');return;}
+  if(userPoints<100){showToast('❗ Хамгийн багадаа 100 pts хэрэгтэй');return;}
+  userPoints-=100;
+  updateUI();
+  historyData.unshift({icon:'🚌',type:'spend',label:'NFC карт цэнэглэсэн',date:today(),pts:'-100'});
+  renderHistory();
+  showToast(`🚌 Карт амжилттай 1,000₮-р цэнэглэгдлээ!`);
+  document.getElementById('nfcCard').value='';
+}
+
+function addPoints(n, label) {
+  userPoints+=n; updateUI();
+  historyData.unshift({icon:'⬡',type:'earn',label,date:today(),pts:`+${n}`});
+  renderHistory();
+  showToast(`+${n} pts — ${label}`);
+}
+
+function updateUI() {
+  document.getElementById('totalPoints').textContent=userPoints;
+  document.getElementById('nav-points').textContent=userPoints;
+  const sub=document.querySelector('.points-sub');
+  if(sub) sub.textContent=`≈ ${(userPoints*10).toLocaleString()}₮ автобусны цэнэглэлт`;
+}
+
+function today() {
+  const d=new Date(); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links a,.bnav-btn').forEach(a=>a.classList.remove('active'));
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+let toastTimer;
+function showToast(msg) {
+  document.getElementById('toastMsg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+init();
+</script>
+</body>
+</html>
